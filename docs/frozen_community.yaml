@@ -1,0 +1,304 @@
+---
+swagger: "2.0"
+info:
+  description: frozen community standard API
+  version: 1.0.0
+  title: Frozen Community
+  contact:
+    email: gabbyyam.dx@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /S9627/v_community/1.0.0
+tags:
+- name: user
+  description: 用户相关接口
+- name: thread
+  description: 帖子 & 评论相关接口
+schemes:
+- https
+paths:
+  /user/forum-login:
+    get:
+      tags:
+      - user
+      summary: 登录
+      description: 用户登录
+      operationId: userLogin
+      produces:
+      - application/json
+      parameters:
+      - name: user_name
+        in: query
+        required: true
+        type: string
+      - name: password
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 查找成功，返回正确的user对象，如果查无此人返回null
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+  /user/forum-user:
+    get:
+      tags:
+      - user
+      summary: 条件查找用户
+      description: 依据一定的选项条件查找用户，至少需要一项条件，在前端控制
+      operationId: searchUser
+      produces:
+      - application/json
+      parameters:
+      - name: user_name
+        in: query
+        description: 按照用户名查找用户
+        required: false
+        type: string
+      - name: create_time
+        in: query
+        description: 依据用户创建的时间 如：2016-08-29
+        required: false
+        type: string
+      - name: id
+        in: query
+        description: 依据用户id
+        required: false
+        type: integer
+      responses:
+        "200":
+          description: 查找成功，返回正确的user对象，如果查无此人返回null
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        "400":
+          description: 参数错误
+    post:
+      tags:
+      - user
+      summary: 用户注册接口
+      description: 新用户注册，没有检测，要在前端先检验合法性
+      operationId: addUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: 新用户的基本信息
+        required: false
+        schema:
+          $ref: '#/definitions/user'
+      responses:
+        "201":
+          description: 注册成功
+        "400":
+          description: 参数错误，参数遗漏
+        "401":
+          description: url过长或非法
+        "409":
+          description: 用户名重复
+    put:
+      tags:
+      - user
+      summary: 修改用户信息
+      description: 修改用户信息，用户名需要判定是否重名（用查询接口）
+      operationId: patchUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: user_id
+        in: query
+        required: true
+        type: integer
+      - name: user_name
+        in: query
+        required: false
+        type: string
+      - name: password
+        in: query
+        required: false
+        type: string
+      - name: introduction
+        in: query
+        required: false
+        type: string
+      - name: avartar_url
+        in: query
+        required: false
+        type: string
+      responses:
+        "200":
+          description: 修改成功
+        "400":
+          description: 参数错误，无参数
+        "401":
+          description: url过长或非法
+        "409":
+          description: 用户名重复
+    delete:
+      tags:
+      - user
+      summary: 封禁用户
+      description: 依照id封禁某个用户，但不会删除,封禁的用户会显示自己的之前的帖子，但是无法进行发言，已经封禁的用户也用这个接口解封
+      operationId: banUser
+      produces:
+      - application/json
+      parameters:
+      - name: user_id
+        in: query
+        required: false
+        type: integer
+      responses:
+        "200":
+          description: 操作成功
+        "400":
+          description: 失败
+  /user/forum-user-following:
+    get:
+      tags:
+      - user
+      summary: 拉取用户关注列表或粉丝列表
+      description: 依据一定的选项条件查找用户，至少需要一项条件，在前端控制
+      operationId: searchUserFollowingList
+      produces:
+      - application/json
+      parameters:
+      - name: user_id
+        in: query
+        description: 依照id拉取
+        required: false
+        type: integer
+      - name: is_following
+        in: query
+        description: true拉取关注列表，false拉取粉丝列表
+        required: false
+        type: boolean
+      responses:
+        "200":
+          description: 查找成功，返回一组user对象
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        "400":
+          description: 参数错误
+  /thread/forum-thread-page:
+    get:
+      summary: 分页查找帖子
+      description: 需要两个参数，第一条的id和每页的数量，返回的帖子数组按更新时间排序，也就是update_time
+      produces:
+      - application/json
+      parameters:
+      - name: start_id
+        in: query
+        required: false
+        type: integer
+      - name: thread_count
+        in: query
+        required: false
+        type: integer
+      responses:
+        "200":
+          description: 查找成功，返回一组user对象
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/thread'
+definitions:
+  user:
+    type: object
+    required:
+    - user_name
+    properties:
+      id:
+        type: integer
+        example: 114514
+      user_name:
+        type: string
+        example: GabbyYam
+      password:
+        type: string
+        example: happy_new_year
+      avartar_url:
+        type: string
+        example: https://www.marxist.com/images/cache/3d6c28f9f9afc5271c2fa0f2f7ebb8e9_w750_h563.jpg
+      create_time:
+        type: string
+        example: 2016-08-29T00:00:00.000+0000
+      update_time:
+        type: string
+        example: 2016-08-29T00:00:00.000+0000
+  thread:
+    type: object
+    required:
+    - content
+    - title
+    properties:
+      user_id:
+        type: integer
+      title:
+        type: string
+        example: 如何评价furry？
+      content:
+        type: string
+      likes:
+        type: integer
+      create_time:
+        type: string
+        format: date-time
+        example: 2016-08-29
+      update_time:
+        type: string
+        format: date-time
+        example: 2016-08-29
+  sub_thread:
+    required:
+    - content
+    properties:
+      user_id:
+        type: integer
+      content:
+        type: string
+        example: 你在讽刺谁？你想颠覆什么？破坏什么？是谁指使你这么说的？
+      likes:
+        type: integer
+      parent_thread_id:
+        type: integer
+      create_time:
+        type: string
+        format: date-time
+        example: 2016-08-29
+      update_time:
+        type: string
+        format: date-time
+        example: 2016-08-29
+  comment:
+    required:
+    - content
+    properties:
+      user_id:
+        type: integer
+      content:
+        type: string
+        example: 哈哈
+      likes:
+        type: integer
+      parent_thread_id:
+        type: integer
+      create_time:
+        type: string
+        format: date-time
+        example: 2016-08-29
+      update_time:
+        type: string
+        format: date-time
+        example: 2016-08-29

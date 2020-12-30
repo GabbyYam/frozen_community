@@ -28,7 +28,7 @@ public class ForumUserController {
     @Autowired
     ForumUserMapper mapper;
 
-    @RequestMapping(value = "/finduser")
+    @GetMapping
     String getUserById(@RequestParam("id") Integer id) {
         // QueryWrapper wrapper = new QueryWrapper();
         // wrapper.eq("user_name", "GabbyYam");
@@ -39,6 +39,15 @@ public class ForumUserController {
         return res;
     }
 
+    @PostMapping
+    String userSignUp(@RequestParam("user_name") String userName, @RequestParam("password") String password,
+                      @RequestParam("introduction") String introduction) {
+        ForumUser user = new ForumUser();
+        user.setPassword(password);
+        user.setUserName(userName);
+        user.setIntroduction(introduction);
+        return "200";
+    }
     @RequestMapping(value = "hello")
     String hello() {return "hello!";}
 }

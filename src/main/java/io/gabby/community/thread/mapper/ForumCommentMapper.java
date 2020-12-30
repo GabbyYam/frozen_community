@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author GabbyYam
- * @since 2020-12-29
+ * @since 2020-12-30
  */
 public interface ForumCommentMapper extends BaseMapper<ForumComment> {
 

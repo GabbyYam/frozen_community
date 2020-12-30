@@ -11,13 +11,15 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author GabbyYam
- * @since 2020-12-29
+ * @since 2020-12-30
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ForumThread implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    private Integer userId;
 
     private String title;
 
