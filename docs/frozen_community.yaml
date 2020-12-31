@@ -210,10 +210,10 @@ paths:
       responses:
         "200":
           description: 关注成功
-        "400"
+        "400":
           description: 不可重复关注
   /user/forum-user/unfollow:
-    post:
+    delete:
       tags:
       - user
       summary: 取关
@@ -277,10 +277,10 @@ definitions:
         example: https://www.marxist.com/images/cache/3d6c28f9f9afc5271c2fa0f2f7ebb8e9_w750_h563.jpg
       createTime:
         type: string
-        example: 2016-08-29T00:00:00.000+0000
+        example: '2016-08-29 20:15:10'
       updateTime:
         type: string
-        example: 2016-08-29T00:00:00.000+0000
+        example: '2016-08-29 20:15:10'
   thread:
     type: object
     required:
@@ -299,11 +299,11 @@ definitions:
       createTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
       updateTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
   subThread:
     required:
     - content
@@ -320,11 +320,11 @@ definitions:
       createTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
       updateTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
   comment:
     required:
     - content
@@ -333,7 +333,6 @@ definitions:
         type: integer
       content:
         type: string
-        example: 哈哈
       likes:
         type: integer
       parentThreadId:
@@ -341,8 +340,8 @@ definitions:
       createTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
       updateTime:
         type: string
         format: date-time
-        example: 2016-08-29
+        example: '2016-08-29 20:15:10'
