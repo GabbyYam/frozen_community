@@ -9,8 +9,8 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: virtserver.swaggerhub.com
-basePath: /S9627/v_community/1.0.0
+host: 暂无
+basePath: /v1/
 tags:
 - name: user
   description: 用户相关接口
@@ -29,7 +29,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: user_name
+      - name: userName
         in: query
         required: true
         type: string
@@ -54,12 +54,12 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: user_name
+      - name: userName
         in: query
         description: 按照用户名查找用户
         required: false
         type: string
-      - name: create_time
+      - name: createTime
         in: query
         description: 依据用户创建的时间 如：2016-08-29
         required: false
@@ -115,11 +115,11 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: user_id
+      - name: userId
         in: query
         required: true
         type: integer
-      - name: user_name
+      - name: userName
         in: query
         required: false
         type: string
@@ -131,7 +131,7 @@ paths:
         in: query
         required: false
         type: string
-      - name: avartar_url
+      - name: avartarUrl
         in: query
         required: false
         type: string
@@ -153,7 +153,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: user_id
+      - name: userId
         in: query
         required: false
         type: integer
@@ -172,12 +172,12 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: user_id
+      - name: userId
         in: query
         description: 依照id拉取
         required: false
         type: integer
-      - name: is_following
+      - name: isFollowing
         in: query
         description: true拉取关注列表，false拉取粉丝列表
         required: false
@@ -191,24 +191,68 @@ paths:
               $ref: '#/definitions/user'
         "400":
           description: 参数错误
-  /thread/forum-thread-page:
-    get:
-      summary: 分页查找帖子
-      description: 需要两个参数，第一条的id和每页的数量，返回的帖子数组按更新时间排序，也就是update_time
+  /user/forum-user/follow:
+    post:
+      tags:
+      - user
+      summary: 关注
       produces:
       - application/json
       parameters:
-      - name: start_id
+      - name: userId
+        in: query
+        required: true
+        type: string
+      - name: targetId
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 关注成功
+        "400"
+          description: 不可重复关注
+  /user/forum-user/unfollow:
+    post:
+      tags:
+      - user
+      summary: 取关
+      produces:
+      - application/json
+      parameters:
+      - name: userId
+        in: query
+        required: true
+        type: string
+      - name: targetId
+        in: query
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 取关成功
+        "400":
+          description: 未关注
+  /thread/forum-thread-page:
+    get:
+      tags:
+      - thread
+      summary: 分页查找帖子
+      description: 需要两个参数，第一条的id和每页的数量，返回的帖子数组按更新时间排序，也就是updateTime
+      produces:
+      - application/json
+      parameters:
+      - name: startId
         in: query
         required: false
         type: integer
-      - name: thread_count
+      - name: threadCount
         in: query
         required: false
         type: integer
       responses:
         "200":
-          description: 查找成功，返回一组user对象
+          description: 查找成功，返回一组帖子
           schema:
             type: array
             items:
@@ -217,24 +261,24 @@ definitions:
   user:
     type: object
     required:
-    - user_name
+    - userName
     properties:
       id:
         type: integer
         example: 114514
-      user_name:
+      userName:
         type: string
         example: GabbyYam
       password:
         type: string
-        example: happy_new_year
-      avartar_url:
+        example: happyNewYear
+      avartarUrl:
         type: string
         example: https://www.marxist.com/images/cache/3d6c28f9f9afc5271c2fa0f2f7ebb8e9_w750_h563.jpg
-      create_time:
+      createTime:
         type: string
         example: 2016-08-29T00:00:00.000+0000
-      update_time:
+      updateTime:
         type: string
         example: 2016-08-29T00:00:00.000+0000
   thread:
@@ -243,7 +287,7 @@ definitions:
     - content
     - title
     properties:
-      user_id:
+      userId:
         type: integer
       title:
         type: string
@@ -252,32 +296,32 @@ definitions:
         type: string
       likes:
         type: integer
-      create_time:
+      createTime:
         type: string
         format: date-time
         example: 2016-08-29
-      update_time:
+      updateTime:
         type: string
         format: date-time
         example: 2016-08-29
-  sub_thread:
+  subThread:
     required:
     - content
     properties:
-      user_id:
+      userId:
         type: integer
       content:
         type: string
         example: 你在讽刺谁？你想颠覆什么？破坏什么？是谁指使你这么说的？
       likes:
         type: integer
-      parent_thread_id:
+      parentThreadId:
         type: integer
-      create_time:
+      createTime:
         type: string
         format: date-time
         example: 2016-08-29
-      update_time:
+      updateTime:
         type: string
         format: date-time
         example: 2016-08-29
@@ -285,20 +329,20 @@ definitions:
     required:
     - content
     properties:
-      user_id:
+      userId:
         type: integer
       content:
         type: string
         example: 哈哈
       likes:
         type: integer
-      parent_thread_id:
+      parentThreadId:
         type: integer
-      create_time:
+      createTime:
         type: string
         format: date-time
         example: 2016-08-29
-      update_time:
+      updateTime:
         type: string
         format: date-time
         example: 2016-08-29

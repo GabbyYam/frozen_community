@@ -22,9 +22,9 @@ public class ForumUserFollowing implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "user_id")
-    private Integer userId;
+    private String userId;
 
-    private Integer userFollowingId;
+    private String userFollowingId;
 
     private LocalDateTime createTime;
 

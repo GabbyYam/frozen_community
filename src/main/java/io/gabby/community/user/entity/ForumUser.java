@@ -20,9 +20,10 @@ import lombok.EqualsAndHashCode;
 public class ForumUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
-
     private String userName;
+
+    @TableId("user_id")
+    private String userId;
 
     private String introduction;
 
@@ -33,6 +34,8 @@ public class ForumUser implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    private Boolean isDeleted = Boolean.FALSE;
 
 
 }

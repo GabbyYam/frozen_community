@@ -126,6 +126,7 @@
 
     <!--maven plugin-->
     <build>
+        <finalName>frozen-community</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
